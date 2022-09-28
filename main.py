@@ -1,4 +1,5 @@
 import requests
+from datetime import datetime
 
 APP_ID = "61f13d61"
 API_KEY = "c23b22b28c8acb6bf4ce7f61e9ca80e1"
@@ -28,9 +29,33 @@ post_data = {
     "age":MY_AGE,
 }
 
-reponses = requests.post(url=nutritionix_endpoint, json=post_data, headers=nutritionix_header)
-exercise_data = reponses.json()
+exercise_reponses = requests.post(url=nutritionix_endpoint, json=post_data, headers=nutritionix_header)
+exercise_data = exercise_reponses.json()
 print(exercise_data)
+
+sheety_api = "https://api.sheety.co/a450fa0399ec9bc34be00ca2355b671d/workoutTracking/workouts"
+
+upload_time = datetime.now()
+
+headers = {"Authorization": "Bearer djfaskgejwio3u198254ujfhdkj@#@$kjfh"}
+
+for exercise in exercise_data["exercises"]:
+    post_data = {
+        "workout":
+        {
+            "date":upload_time.strftime("%d/%m/%Y"),
+            "time": upload_time.strftime("%X"),
+            "exercise": exercise["name"].title(),
+            "duration":exercise["duration_min"],
+            "calories": exercise["nf_calories"],
+        }
+    }
+    sheet_response = requests.post(url=sheety_api, json=post_data, headers=headers)
+    print(sheet_response.text)
+
+
+
+
 
 
 
