@@ -1,8 +1,13 @@
 import requests
 from datetime import datetime
+import os
+from dotenv import load_dotenv
 
-APP_ID = "61f13d61"
-API_KEY = "c23b22b28c8acb6bf4ce7f61e9ca80e1"
+load_dotenv()
+
+APP_ID = os.getenv("APP_ID")
+API_KEY = os.getenv("API_KEY")
+
 
 MY_AGE = 21
 MY_GENDER = "male"
@@ -33,11 +38,12 @@ exercise_reponses = requests.post(url=nutritionix_endpoint, json=post_data, head
 exercise_data = exercise_reponses.json()
 print(exercise_data)
 
-sheety_api = "https://api.sheety.co/a450fa0399ec9bc34be00ca2355b671d/workoutTracking/workouts"
+
+sheety_api = os.getenv("SHEET_API")
 
 upload_time = datetime.now()
 
-headers = {"Authorization": "Bearer djfaskgejwio3u198254ujfhdkj@#@$kjfh"}
+headers = {"Authorization": "Bearer " + os.getenv("TOKEN")}
 
 for exercise in exercise_data["exercises"]:
     post_data = {
